@@ -39,7 +39,7 @@ class Points {
 		return Math.sqrt(dx * dx + dy * dy);
 	}
 
-	max_distance() {
+	min_distance() {
 		if (this.arr.length < 2)
 			return;
 
@@ -113,7 +113,7 @@ function test_points() {
 	points.delete("p5")
 	points.log();
 
-	console.log(points.max_distance());
+	console.log(points.min_distance());
 
 	let p = points.read("p"); // 0, 0
 	console.log(points.get_points_less(p, 5));

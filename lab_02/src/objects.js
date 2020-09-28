@@ -1,5 +1,5 @@
 "use strict"
-
+// отчет =  титульник + задание + код;
 class Point {
 	constructor(x, y) {
 		this.set_data(x, y);

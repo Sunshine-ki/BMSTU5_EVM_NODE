@@ -1,5 +1,7 @@
 "use strict";
 
+// s = ['aaa','bbb','ccc'].join(''); Это по памяти лучше
+
 class Kids {
 	constructor() {
 		this.arr = [];
@@ -22,7 +24,7 @@ class Kids {
 	}
 
 	read(surname) {
-		return this.arr.find(elem => elem.surname == surname);
+		return this.arr.find(elem => elem.surname === surname);
 		// for (let i = 0; i < this.arr.length; i++)
 		// 	if (this.arr[i].surname === surname)
 		// 		return this.arr[i];

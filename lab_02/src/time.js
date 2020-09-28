@@ -1,7 +1,7 @@
 "use strict"
 
-const TIME_FIRST = 2000
-const TIME_SECOND = 1000
+const TIME_FIRST = 1000
+const TIME_SECOND = 500
 
 function timer() {
 	let a = 1;
@@ -19,11 +19,12 @@ function timer() {
 		if (a > 20) {
 			clearInterval(interval2);
 			a = 1;
-			interval1 = setInterval(funcSecond, TIME_FIRST)
+			interval1 = setInterval(funcFirst, TIME_FIRST)
 		}
 	}
 
-	let interval1 = setInterval(funcFirst, TIME_FIRST), interval2;
+	let interval1 = setInterval(funcFirst, TIME_FIRST);
+	let interval2;
 }
 
 module.exports = { timer };
