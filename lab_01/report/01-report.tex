@@ -1,0 +1,600 @@
+\chapter{TASK\_1. Задание 1}
+
+\section{Техническое задание:}
+
+\begin{itemize}
+	\item Создать хранилище в оперативной памяти для хранения информации о детях.
+	\item Необходимо хранить информацию о ребенке: фамилия и возраст.
+	\item Необходимо обеспечить уникальность фамилий детей.
+\end{itemize}
+
+\section{Реализовать функции:}
+
+\begin{itemize}
+	\item CREATE READ UPDATE DELETE для детей в хранилище
+	\item Получение среднего возраста детей
+	\item Получение информации о самом старшем ребенке
+	\item Получение информации о детях, возраст которых входит в заданный отрезок
+	\item Получение информации о детях, фамилия которых начинается с заданной буквы
+	\item Получение информации о детях, фамилия которых длиннее заданного количества символов
+	\item Получение информации о детях, фамилия которых начинается с гласной буквы
+\end{itemize}
+
+\begin{lstlisting}[caption=Код программы. Задание 1.]
+"use strict";
+
+class Kids {
+	constructor() {
+		this.arr = [];
+	}
+
+	add(surname, age) {
+		// function func(elem) {
+		// 	return elem.surname === surname;
+		// }
+		if (!this.arr.find(elem => elem.surname == surname)) {
+			let new_kid = { surname, age }; // { surname: surname, age : age }
+			this.arr.push(new_kid);
+		}
+	}
+
+	log() {
+		for (let i = 0; i < this.arr.length; i++)
+			console.log(this.arr[i].surname, " ", this.arr[i].age);
+		console.log("\n")
+	}
+
+	read(surname) {
+		return this.arr.find(elem => elem.surname === surname);
+		// for (let i = 0; i < this.arr.length; i++)
+		// 	if (this.arr[i].surname === surname)
+		// 		return this.arr[i];
+		// return ""
+	}
+
+	update(surname, new_age, new_surname = false) {
+		for (let i = 0; i < this.arr.length; i++) {
+			if (this.arr[i].surname === surname) {
+				this.arr[i].age = new_age;
+				if (new_surname && !this.arr.find(elem => elem.surname == new_surname))
+					this.arr[i].surname = new_surname;
+				return;
+			}
+		}
+	}
+
+	delete(surname) {
+		this.arr = this.arr.filter(elem =>
+			elem.surname !== surname);
+	}
+
+	get_avg() {
+		let sum = 0;
+		let len = this.arr.length;
+		for (let i = 0; i < len; i++)
+			sum += this.arr[i].age;
+		return len ? sum / len : 0;
+	}
+
+	get_eldest() {
+		let len = this.arr.length;
+		if (!len)
+			return;
+		let max = this.arr[0];
+		for (let i = 1; i < len; i++) {
+			if (this.arr[i].age > max.age)
+				max = this.arr[i];
+		}
+		return max;
+	}
+
+	get_age_range(begin, end) {
+		return this.arr.filter(elem => elem.age >= begin
+			&& elem.age <= end);
+	}
+
+	get_surname_letter(letter) {
+		return this.arr.filter(elem => elem.surname.charAt(0) === letter);
+	}
+
+	get_surname_len(len) {
+		return this.arr.filter(elem => elem.surname.length > len)
+	}
+
+	get_surname_volwels() {
+		const VOWELS = ['A', 'E', 'I', 'O', 'U'];
+		return this.arr.filter(elem => VOWELS.indexOf(elem.surname.charAt(0).toUpperCase()) != -1)
+	}
+};
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=Код тестов. Задание 1.]
+function test_kids() {
+	let child = new Kids();
+	child.add("Sukocheva", 2);
+	child.add("Sukocheva", 3);
+	child.add("Namestnik", 1);
+	child.add("Vinogradov", 4);
+	child.add("Volkov", 3);
+	child.add("Orbitov", 7);
+
+
+	child.log();
+
+	console.log(child.read("Sukocheva"));
+	child.update("Sukocheva", 4)
+	console.log(child.read("Sukocheva"));
+
+	child.log();
+	child.delete("Vinogradov");
+	child.log();
+
+	child.read("Sukocheva")
+
+	console.log(child.get_avg());
+	console.log(child.get_eldest())
+
+	console.log(child.get_age_range(1, 3))
+	console.log(child.get_surname_letter('S'));
+
+	console.log(child.get_surname_len(6));
+
+	console.log(child.get_surname_volwels());
+}
+\end{lstlisting}
+
+
+\chapter{TASK\_1. Задание 2}
+
+\section{Техническое задание:}
+
+\begin{itemize}
+	\item Создать хранилище в оперативной памяти для хранения информации о студентах.
+	\item Необходимо хранить информацию о студенте: название группы, номер студенческого билета, оценки по программированию.
+	\item Необходимо обеспечить уникальность номеров студенческих билетов.
+\end{itemize}
+
+\section{Реализовать функции:}
+
+\begin{itemize}
+	\item CREATE READ UPDATE DELETE для студентов в хранилище
+	\item Получение средней оценки заданного студента
+	\item Получение информации о студентах в заданной группе
+	\item Получение студента, у которого наибольшее количество оценок в заданной группе
+	\item Получение студента, у которого нет оценок
+\end{itemize}
+
+\begin{lstlisting}[label=some-code,caption=Код программы. Задание 1.]
+"use strict";
+
+	class Students {
+		constructor() {
+			this.arr = [];
+		}
+	
+		add(id, group, arr_score) {
+			if (!this.arr.find(elem => elem.id === id)) {
+				let new_student = { group, id, arr_score };
+				this.arr.push(new_student);
+			}
+		}
+	
+		log() {
+			console.log(this.arr);
+		}
+	
+		read(id) {
+			return this.arr.find(elem => elem.id === id);
+		}
+	
+		update(id, group, arr_score) {
+			let student = this.read(id);
+			if (student) {
+				student.group = group;
+				student.arr_score = arr_score;
+			}
+		}
+	
+		delete(id) {
+			this.arr = this.arr.filter(elem =>
+				elem.id !== id);
+		}
+	
+		get_avg(id) {
+			let student = this.read(id);
+			if (!student)
+				return;
+	
+			let len = student.arr_score.length;
+			let sum = 0;
+			for (let i = 0; i < len; i++)
+				sum += student.arr_score[i];
+	
+			return len ? sum / len : 0;
+		}
+	
+		get_info_group(group) {
+			return this.arr.filter(elem => elem.group === group);
+		}
+	
+		get_student_max_count_score(group) {
+			let students = this.get_info_group(group);
+			if (!students)
+				return;
+			let max = students[0];
+			for (let i = 1; i < students.length; i++) {
+				if (students[i].arr_score.length > max.arr_score.length)
+					max = students[i];
+			}
+			return max
+		}
+	
+		get_student_no_score() {
+			return this.arr.filter(elem => elem.arr_score.length === 0);
+		}
+	};
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Код тестов. Задание 2.]
+	function test_students() {
+		let students = new Students();
+	
+		students.add(123456, "UI7-43b", [5, 5, 5]);
+		students.add(123456, "UI7-43b", [5, 5, 5]);
+	
+		students.add(123457, "UI7-43b", []);
+		students.add(123451, "UI7-43b", [1, 5, 5, 2]);
+		students.add(123000, "UI7-44b", [4, 3, 4]);
+		students.add(123444, "UI7-45b", [5, 4, 5]);
+		students.add(123442, "UI7-45b", [2, 3, 3]);
+		students.add(123441, "UI7-42b", [2, 3, 5]);
+		students.add(123443, "UI7-41b", [5, 2, 3]);
+	
+		students.log();
+	
+		console.log(students.read(123456));
+	
+		students.update(123441, "UI7-42b", [5, 5, 5]);
+		students.log();
+	
+		students.delete(123442);
+		students.log();
+	
+		console.log(students.get_avg(123441));
+		console.log(students.get_info_group("UI7-43b"));
+	
+		console.log(students.get_student_max_count_score("UI7-43b"))
+		console.log(students.get_student_no_score());
+	}
+\end{lstlisting}
+
+
+\chapter{TASK\_1. Задание 3}
+
+\section{Техническое задание:}
+
+\begin{itemize}
+	\item Создать хранилище в оперативной памяти для хранения точек.
+	\item Неоходимо хранить информацию о точке: имя точки, позиция X и позиция Y.
+	\item Необходимо обеспечить уникальность имен точек.
+\end{itemize}
+
+\section{Реализовать функции:}
+
+\begin{itemize}
+	\item CREATE READ UPDATE DELETE для точек в хранилище
+	\item Получение двух точек, между которыми наибольшее расстояние
+	\item Получение точек, находящихся от заданной точки на расстоянии, не превышающем заданную константу
+	\item Получение точек, находящихся выше / ниже / правее / левее заданной оси координат
+	\item Получение точек, входящих внутрь заданной прямоугольной зоны
+\end{itemize}
+
+
+\begin{lstlisting}[label=some-code,caption=Код программы. Задание 3]
+"use strict";
+
+	class Points {
+		constructor() {
+			this.arr = [];
+		}
+	
+		add(name_point, x, y) {
+			if (!this.arr.find(elem => elem.name_point === name_point)) {
+				let new_point = { name_point, x, y };
+				this.arr.push(new_point);
+			}
+		}
+	
+		log() {
+			console.log(this.arr);
+		}
+	
+		read(name_point) {
+			return this.arr.find(elem => elem.name_point === name_point);
+		}
+	
+		update(name_point, x, y) {
+			let point = this.read(name_point);
+			if (point) {
+				point.x = x;
+				point.y = y;
+			}
+		}
+	
+		delete(name_point) {
+			this.arr = this.arr.filter(elem =>
+				elem.name_point !== name_point);
+		}
+	
+		get_distance(p1, p2) {
+			let dx = p1.x - p2.x;
+			let dy = p1.y - p2.y;
+			return Math.sqrt(dx * dx + dy * dy);
+		}
+	
+		min_distance() {
+			if (this.arr.length < 2)
+				return;
+	
+			let len = this.arr.length;
+			let p1 = this.arr[0];
+			let p2 = this.arr[1];
+			let min_dist = this.get_distance(p1, p2), current_dist;
+			console.log(min_dist);
+	
+			for (let i = 0; i < len - 1; i++)
+				for (let j = i + 1; j < len; j++) {
+					current_dist = this.get_distance(this.arr[i], this.arr[j]);
+					if (current_dist < min_dist)
+						min_dist = current_dist;
+				}
+	
+			return min_dist;
+		}
+	
+		// Получение точек, находящихся от заданной точки на расстоянии,
+		// не превышающем заданную константу
+		get_points_less(point, max_len) {
+			return this.arr.filter(elem =>
+				this.get_distance(point, elem) <= max_len);
+		}
+	
+		// axis: 0-x, 1-y;
+		// direction: 0-'+', 1-'-';  
+		get_points_axis(axis, direction) {
+			let func;
+	
+			if (!axis && !direction)
+				func = p => p.x > 0;
+			else if (!axis && direction)
+				func = p => p.x < 0;
+			else if (!direction)
+				func = p => p.y > 0;
+			else
+				func = p => p.y < 0;
+	
+			return this.arr.filter(func);
+		}
+		get_points_inside_rectangle(min_x, max_x, min_y, max_y) {
+			return this.arr.filter(p =>
+				p.x > min_x && p.x < max_x &&
+				p.y > min_y && p.y < max_y);
+		}
+	}
+	
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=Код тестов. Задание 3.]
+	function test_points() {
+		let points = new Points();
+		points.add("p", 0, 0);
+		points.add("p0", 3, 4);
+		points.add("p1", 1, 1);
+		points.add("p2", 10, 10);
+		points.add("p3", 1, 10);
+		points.add("p4", 10, 1);
+		points.add("p5", 12, 0);
+		points.add("p6", -12, 1);
+		points.add("p7", 12, -1);
+	
+		points.log();
+	
+		console.log(points.read("p1"));
+		console.log(points.read("p3"));
+		console.log(points.read("p13"));
+		console.log(points.read("p5"));
+	
+		points.update("p5", 100, 12);
+		points.log();
+		points.delete("p5")
+		points.log();
+	
+		console.log(points.min_distance());
+	
+		let p = points.read("p"); // 0, 0
+		console.log(points.get_points_less(p, 5));
+	
+		console.log("Points:\n")
+		points.log();
+		console.log("axis X-:\n", points.get_points_axis(0, 1));
+		console.log("axis Y-:\n", points.get_points_axis(1, 1));
+	
+		console.log("rectangle: -10, 10, -10, 10\n", points.get_points_inside_rectangle(-10, 10, -10, 10));
+	}	
+\end{lstlisting}
+
+\chapter{TASK\_2. Задание 1}
+
+\section{Техническое задание:}
+
+\begin{itemize}
+	\item Создать класс Точка.
+	\item Добавить классу точка Точка метод инициализации полей и метод вывода полей на экран
+	\item Создать класс Отрезок.
+	\item У класса Отрезок должны быть поля, являющиеся экземплярами класса Точка.
+	\item Добавить классу Отрезок метод инициализации полей, метод вывода информации о полях на экран, а так же метод получения длины отрезка.
+\end{itemize}
+
+
+\begin{lstlisting}[caption=Код программы. Задание 1.]
+	class Point {
+		constructor(x, y) {
+			this.set_data(x, y);
+		}
+	
+		set_data(x, y) {
+			this.x = x;
+			this.y = y;
+		}
+	
+		log() {
+			console.log("X: ", this.x, "Y: ", this.y);
+		}
+	}
+	
+	class Line {
+		constructor(x1, y1, x2, y2) {
+			this.set_data(x1, y1, x2, y2);
+		}
+	
+		set_data(x1, y1, x2, y2) {
+			this.start_point = new Point(x1, y1);
+			this.end_point = new Point(x2, y2);
+		}
+	
+		get_distance() {
+			const dx = this.start_point.x - this.end_point.x;
+			const dy = this.start_point.y - this.end_point.y;
+			return Math.sqrt(dx * dx + dy * dy);
+		}
+	
+		log() {
+			console.log("Начальная точка:");
+			this.start_point.log();
+			console.log("Конечная точка:");
+			this.end_point.log();
+		}
+	}	
+\end{lstlisting}
+
+\chapter{TASK\_2. Задание 2}
+
+\section{Техническое задание:}
+
+\begin{itemize}
+	\item Создать класс Треугольник.
+	\item Класс Треугольник должен иметь поля, хранящие длины сторон треугольника.
+	\item Необходимо обеспечить уникальность номеров студенческих билетов.
+\end{itemize}
+
+\section{Реализовать следующие методы:}
+
+\begin{itemize}
+	\item Метод инициализации полей
+	\item Метод проверки возможности существования треугольника с такими сторонами
+	\item Метод получения периметра треугольника
+	\item Метод получения площади треугольника
+	\item Метод для проверки факта: является ли треугольник прямоугольным
+\end{itemize}
+
+
+\begin{lstlisting}[label=some-code,caption=Код программы. Задание 1.]
+	class Triangle {
+		constructor(a, b, c) {
+			this.set_data(a, b, c);
+		}
+	
+		set_data(a, b, c) {
+			this.a = a;
+			this.b = b;
+			this.c = c;
+		}
+	
+		check_existence() {
+			if ((this.a < this.b + this.c) &&
+				(this.b < this.a + this.c) &&
+				(this.c < this.b + this.a))
+				return true;
+			return false;
+		}
+	
+		get_perimeter() {
+			if (!this.check_existence())
+				return;
+			return this.a + this.b + this.c;
+		}
+	
+		area() {
+			if (!this.check_existence())
+				return;
+			let semi_perimeter = this.get_perimeter() / 2;
+			return Math.sqrt(semi_perimeter * (semi_perimeter - this.a) *
+				(semi_perimeter - this.b) * (semi_perimeter - this.c));
+		}
+	
+		check_rectangular() {
+			let EPS = 1e-5;
+			if (!this.check_existence())
+				return;
+			let a = this.a, b = this.b, c = this.c;
+	
+			if ((a * a + b * b - c * c < EPS) ||
+				(a * a + c * c - b * b < EPS) ||
+				(c * c + b * b - a * a < EPS))
+				return true;
+			return false;
+		}
+	}
+	
+\end{lstlisting}
+
+
+\chapter{TASK\_2. Задание 3}
+
+\section{Техническое задание:}
+
+\begin{itemize}
+	\item Реализовать программу, в которой происходят следующие действия:
+	\item Происходит вывод целых чисел от 1 до 10 с задержками в 2 секунды.
+	\item После этого происходит вывод от 11 до 20 с задержками в 1 секунду.
+	\item Потом опять происходит вывод чисел от 1 до 10 с задержками в 2 секунды.
+	\item После этого происходит вывод от 11 до 20 с задержками в 1 секунду.
+	\item Это должно происходить циклически.
+\end{itemize}
+
+
+
+\begin{lstlisting}[label=some-code,caption=Код программы. Задание 3]
+	"use strict"
+
+	const TIME_FIRST = 1000
+	const TIME_SECOND = 500
+	
+	function timer() {
+		let a = 1;
+	
+		let funcFirst = () => {
+			console.log(a++);
+			if (a > 10) {
+				clearInterval(interval1);
+				interval2 = setInterval(funcSecond, TIME_SECOND)
+			}
+		}
+	
+		let funcSecond = () => {
+			console.log(a++);
+			if (a > 20) {
+				clearInterval(interval2);
+				a = 1;
+				interval1 = setInterval(funcFirst, TIME_FIRST)
+			}
+		}
+	
+		let interval1 = setInterval(funcFirst, TIME_FIRST);
+		let interval2;
+	}
+	
+\end{lstlisting}
+
