@@ -2,7 +2,6 @@
 
 const readlineSync = require('readline-sync');
 const fs = require("fs");
-const { FILE } = require('dns');
 
 function task1() {
 	const FILE_NAME = "data/task1.txt";
@@ -75,6 +74,10 @@ function task3() {
 }
 
 function recursionTask(folder) {
+	// По заданию сказано, что все файлы в формате txt
+	// Если будут файлы с другим форматом, то сломается программа.
+	// (потому что рекурсивная функция попытается открыть этот файл, так
+	// как будет думать: 'всё что не txt - значит папка').
 	if (!fs.existsSync(folder)) {
 		console.log("Error!\nFolder does not exist!");
 		return;
@@ -132,23 +135,16 @@ function max_branch(obj) {
 	// console.log(typeof (obj))
 	let temp;
 	for (let field in obj) {
-		// temp = JSON.parse(field)
-		console.log(field, temp)
+		console.log(field)
 		console.log(typeof (field))
 	}
 }
 
 function task7() {
-	const jsonString = '{\
-	"parentA": {\
-	"name": "George",\
-		"age": 25\
-},\
-	"parentB": {\
-		"name": "Alex",\
-			"age": 29\
-	}\
-} ';
+	// data/task7.txt
+	const file_name = readlineSync.question("Input file name: ");
+	const jsonString = fs.readFileSync(file_name, "utf-8");
+	console.log(jsonString)
 
 	const obj = JSON.parse(jsonString);
 	console.log(obj);

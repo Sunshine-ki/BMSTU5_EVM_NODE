@@ -1,0 +1,12 @@
+{
+	"parentA":
+	{
+		"name": "George",
+		"age": 25
+	},
+	"parentB": 
+	{
+		"name": "Alex",
+		"age": 29
+	}
+} 
