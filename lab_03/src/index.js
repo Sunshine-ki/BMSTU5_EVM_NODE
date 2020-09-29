@@ -1,12 +1,13 @@
 "use strict";
 
-const FILE_NAME = "data/test.txt";
 
 const readlineSync = require('readline-sync');
 const fs = require("fs");
 const { FILE } = require('dns');
 
 function task1() {
+	const FILE_NAME = "data/task1.txt";
+
 	const N = readlineSync.question("Input N: ");
 	const arr = [];
 	let line;
@@ -37,6 +38,8 @@ function countVowels(str) {
 }
 
 function task2() {
+	const FILE_NAME = "data/task2.txt";
+
 	const contentFile = fs.readFileSync(FILE_NAME, "utf-8");
 	const obj = JSON.parse(contentFile);
 
@@ -51,13 +54,13 @@ function task2() {
 function task3() {
 	// Расширение файлов.
 	const extension = readlineSync.question("Input extension: ");
-	// Адрес папки.
-	const folder = readlineSync.question("Input folder: ");
+	// Имя папки.
+	const folder = readlineSync.question("Input the folder's name: ");
 
 	let files;
 
 	if (!fs.existsSync(folder)) {
-		console.log("Error!\nFolder does not exist!");
+		console.log("Error!\nThe folder does not exist!");
 		return;
 	}
 
@@ -66,16 +69,56 @@ function task3() {
 	for (let i = 0; i < files.length; i++) {
 		let file = files[i].split('.');
 		if (file[file.length - 1] === extension) {
-			let contentFile = fs.readFileSync(files[i], "utf-8");
+			let contentFile = fs.readFileSync(folder + "/" + files[i], "utf-8");
 			console.log(contentFile);
 		}
+	}
+}
+
+function recursionTask(folder) {
+	if (!fs.existsSync(folder)) {
+		console.log("Error!\nFolder does not exist!");
+		return;
+	}
+
+	let files = fs.readdirSync(folder);
+	let contentFile;
+
+	for (let i = 0; i < files.length; i++) {
+		let file = files[i].split('.');
+		if (file[file.length - 1] === "txt") {
+			contentFile = fs.readFileSync(folder + "/" + files[i], "utf-8");
+			if (contentFile.length < 11) {
+				console.log("Path: ", folder + "/" + files[i]);
+			}
+			// console.log(contentFile, "\n");
+		}
+		else {
+			recursionTask(folder + "/" + files[i]);
+		}
+	}
+}
+
+function task4() {
+	const folder = readlineSync.question("Input the folder's name: ");
+	recursionTask(folder);
+}
+
+function task5() {
+	const N = readlineSync.question("Input N: ");
+
+	let name;
+
+	for (let i = 0; i < N; i++) {
+		name = readlineSync.question("Input str: ");
 	}
 
 
 }
 
 function main() {
-	task3();
+	// TODO: В json добавить run task1, run task2 и тд... + тестики норм написать.
+	task5();
 }
 
 main();
