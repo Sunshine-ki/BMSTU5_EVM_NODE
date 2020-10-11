@@ -20,7 +20,6 @@ p {
 	--light: #FFFFFF;
 	--dark: #E0FFFF;
 	--text: #C8A2C8
-
 }
 
 body {
@@ -35,7 +34,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100% 30px;
 	background-position: top left, bottom left;
-	min-height: 98vh;
+	min-height: 100vh;
 }
 
 div {
@@ -90,7 +89,15 @@ input {
     /* border: none; */
     font-size:22px;
     font-family:Tahoma, Geneva, sans-serif;
-    color:#000000;  
+    /* color:#000000;   */
 	margin:0 0 6px 0;
 }
 
+@keyframes background {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}

@@ -3,6 +3,7 @@ const fs = require("fs");
 const ENCODING = "utf-8"
 
 const path = require("path");
+const { connected } = require("process");
 
 
 function LoadPage(app, path, file_name) {
@@ -67,8 +68,28 @@ function task3(app) {
 	app.get("/generate_html/result", (request, response) => {
 		const field_names = request.query.field_names;
 		const address = request.query.address;
+		const field_names_array = field_names.split(' ');
 
-		response.end("field_names = " + field_names);
+		const pathBegin = path.join(__dirname, "..", "data", "begin.txt");
+		const pathEnd = path.join(__dirname, "..", "data", "end.txt");
+
+		const fileBegin = fs.readFileSync(pathBegin, ENCODING)
+		const fileEnd = fs.readFileSync(pathEnd, ENCODING)
+
+		let fileContent = `<form method="GET" action="${address}">\n`
+		for (let i = 0; i < field_names_array.length; i++) {
+			fileContent += `
+<p>Введите ${field_names_array[i]}</p>\n\
+<input name="${field_names_array[i]}" spellcheck="false" autocomplete="off"></input>`
+		}
+
+		fileContent += '\
+<p><button type="submit">Отправить</button></p>\n\
+</form>\n'
+
+		console.log(fileContent)
+
+		response.end(fileBegin + fileContent + fileEnd);
 	});
 
 }
