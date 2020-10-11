@@ -1,12 +1,13 @@
 const fs = require("fs");
 
+const ENCODING = "utf-8"
+
 const path = require("path");
 
-const ENCODING = "utf-8"
 
 function LoadPage(app, path, file_name) {
 	app.get(path, (request, response) => {
-		const fileContent = fs.readFileSync(file_name, ENCODING);
+		const fileContent = fs.readFileSync("public/" + file_name, ENCODING);
 		response.end(fileContent);
 	});
 }
@@ -46,6 +47,8 @@ function task2(app) {
 		}
 
 		const PATH = path.join(__dirname, "..", "data", "task2.json");
+
+		console.log(PATH)
 
 		const array = JSON.parse(fs.readFileSync(PATH));
 
@@ -117,4 +120,4 @@ function task4(app) {
 }
 
 
-module.exports = { task1, task2, task3, task4, LoadPage };
+module.exports = { task1, task2, task3, task4, LoadPage }; //, PATH };
