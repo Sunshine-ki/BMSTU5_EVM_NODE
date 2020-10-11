@@ -49,8 +49,6 @@ function task2(app) {
 
 		const PATH = path.join(__dirname, "..", "data", "task2.json");
 
-		console.log(PATH)
-
 		const array = JSON.parse(fs.readFileSync(PATH));
 
 		if (indexInt < 0 || indexInt > array.length) {
@@ -86,8 +84,6 @@ function task3(app) {
 		fileContent += '\
 <p><button type="submit">Отправить</button></p>\n\
 </form>\n'
-
-		console.log(fileContent)
 
 		response.end(fileBegin + fileContent + fileEnd);
 	});
