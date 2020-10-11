@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- <html lang="ru"> -->
+
+<head>
+	<meta charset="UTF-8">
+	<!-- <link rel="stylesheet" type="text/css" href="task1.css"> -->
+	<title>Генерация страницы</title>
+</head>
+
+<body>
+	<div id="header">
+		<h1 class="header-title">Генерация разметки!</h1>
+	</div>
+
+	<div id="main">
+		<h2>Получить разметку страницы</h2>
+		<form method="GET" action="/generate_html/result">
+			<p>Название полей</p>
+			<input name="field_names" spellcheck="false" autocomplete="off">
+			<p>адрес</p>
+			<input name="address" spellcheck="false" autocomplete="off">
+			<br>
+			<br>
+			<input type="submit" value="Получить">
+		</form>
+
+	</div>
+</body>
+
+</html>
