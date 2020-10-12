@@ -2,6 +2,7 @@
 
 const readlineSync = require('readline-sync');
 const fs = require("fs");
+const { deflate } = require('zlib');
 
 function task1() {
 	const FILE_NAME = "data/task1.txt";
@@ -16,6 +17,9 @@ function task1() {
 			arr.push(line);
 	}
 
+	// Первый параметр(swedishFamilyObj) - значение, преобразуемое в строку JSON
+	// Второй параметр(null) - запрещает замены
+	// Третий параметр(4) - размер отступов
 	const jsonStr = JSON.stringify(arr, null, 4);
 
 	fs.writeFileSync(FILE_NAME, jsonStr);
@@ -41,8 +45,8 @@ function task2() {
 	const contentFile = fs.readFileSync(FILE_NAME, "utf-8");
 	const obj = JSON.parse(contentFile);
 
-	console.log(contentFile);
-
+	console.log("File:" + contentFile);
+	console.log("Result:");
 	for (let i = 0; i < obj.length; i++) {
 		if (countVowels(obj[i]) === obj[i].length)
 			console.log(obj[i]);
@@ -125,31 +129,59 @@ function task5() {
 }
 
 function task6() {
-	// TODO: what?
-}
-
-
-function max_branch(obj) {
-	if (typeof (obj) !== "object")
-		return
-	// console.log(typeof (obj))
-	let temp;
-	for (let field in obj) {
-		console.log(field)
-		console.log(typeof (field))
+	// result: 6978
+	let a = 1;
+	let cnt = 0;
+	try {
+		while (JSON.stringify(a)) {
+			cnt++;
+			a = { a };
+		}
+	} catch (err) {
+		console.log(cnt);
 	}
 }
 
+
+function find_max_branch(obj, data) {
+	if (typeof (obj) !== "object") {
+		return;
+	}
+
+	if (data.curr_depth > data.max_depth)
+		data.max_depth = data.curr_depth;
+
+	data.curr_depth++;
+
+	for (let field in obj) {
+		console.log(field)
+		data.max_branch.push(field)
+		data.max_branch.pop();
+		find_max_branch(obj[field], data)
+	}
+
+	data.curr_depth--;
+}
+
 function task7() {
+	let data = {
+		"curr_branch": ["root"],
+		"max_branch": [],
+		"curr_depth": 0,
+		"max_depth": 0
+	}
 	// data/task7.txt
-	const file_name = readlineSync.question("Input file name: ");
+	// const file_name = readlineSync.question("Input file name: ");
+	const file_name = "data/task7.txt";
 	const jsonString = fs.readFileSync(file_name, "utf-8");
-	console.log(jsonString)
+
+	console.log("FILE:", jsonString)
 
 	const obj = JSON.parse(jsonString);
-	console.log(obj);
-	max_branch(obj)
+	// console.log(obj);
 
+	find_max_branch(obj, data);
+	console.log(data)
 }
 
 module.exports = { task1, task2, task3, task4, task5, task6, task7 };

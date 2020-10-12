@@ -3,8 +3,6 @@ const fs = require("fs");
 const ENCODING = "utf-8"
 
 const path = require("path");
-const { connected } = require("process");
-
 
 function LoadPage(app, path, file_name) {
 	app.get(path, (request, response) => {

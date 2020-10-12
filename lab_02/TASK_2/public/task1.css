@@ -34,7 +34,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100% 30px;
 	background-position: top left, bottom left;
-	min-height: 100vh;
+	/* min-height: 100vh; */
 }
 
 div {

@@ -3,7 +3,8 @@
 const path = require("path");
 const tasks = require("./tasks");
 const express = require("express");
-const { nextTick } = require("process");
+
+// const { nextTick } = require("process");
 
 
 function main() {
@@ -18,7 +19,8 @@ function main() {
 
 	// for (let i = 1; i <= 4; i++)
 	// 	tasks['task' + i]()
-	console.log("Begin!")
+	console.log(`Server on port ${port}`);
+
 	tasks.task1(app);
 	tasks.task2(app);
 	tasks.task3(app);
