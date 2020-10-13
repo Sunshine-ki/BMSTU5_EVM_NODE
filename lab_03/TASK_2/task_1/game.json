@@ -1,0 +1,42 @@
+[
+	{
+		"name": "Neverwinter.",
+		"type": "rpg",
+		"age_limit": 18
+	},
+	{
+		"name": "The Witcher 3: Wild Hunt.",
+		"type": "rpg",
+		"age_limit": 0
+	},
+	{
+		"name": "Disco Elysium.",
+		"type": "rpg",
+		"age_limit": 14
+	},
+	{
+		"name": "The Sims.",
+		"type": "life",
+		"age_limit": 13
+	},
+	{
+		"name": "SAO.",
+		"type": "adventures",
+		"age_limit": 12
+	},
+	{
+		"name": "Resident Evil.",
+		"type": "horror",
+		"age_limit": 16
+	},
+	{
+		"name": "GTA",
+		"type": "life",
+		"age_limit": 18
+	},
+	{
+		"name": "My little pony",
+		"type": "adventures",
+		"age_limit": 0
+	}
+]
