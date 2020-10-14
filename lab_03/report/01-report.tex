@@ -128,7 +128,102 @@
 
 
 \begin{lstlisting}[caption=Код программы. TASK\_2. Реализация задания 2]
-
+	"use strict";
+	
+	// импортируем библиотеки
+	const express = require("express");
+	const cookieSession = require("cookie-session");
+	const fs = require("fs");
+	
+	function main() {
+		// запускаем сервер
+		const app = express();
+		const port = 5000;
+		app.listen(port);
+		console.log(`Server on port ${port}`);
+	
+		// Работа с сессией.
+		app.use(cookieSession({
+			name: 'session',
+			keys: ['hhh', 'qqq', 'vvv'],
+			maxAge: 24 * 60 * 60 * 1000 * 365
+		}));
+	
+		// Авторизация.
+		// Принимает два параметра:
+		// Логин и пароль.
+		app.get("/api/sign_in", function (request, response) {
+			// Если пользователь уже авторизован
+			// То сообщаем ему об этом.
+			if (request.session.login) {
+				return response.end("You are sign in.");
+			}
+	
+			// Получаем параметры запроса.
+			const login = request.query.login;
+			const password = request.query.password;
+	
+			// Проверяем существование.
+			if (!login) return response.end("Login not set");
+			if (!password) return response.end("password not set");
+	
+	
+			// Если пользователь не авторизирован и 
+			// Если такой пользователь есть в 
+			// Нашем массиве, то выставляем для него cookie.
+			const FILE_NAME = "data.json";
+			const jsonString = fs.readFileSync(FILE_NAME, "utf-8");
+			const obj = JSON.parse(jsonString);
+	
+			for (let i = 0; i < obj.length; i++) {
+				if (obj[i].login === login && obj[i].password == password) {
+					request.session.login = login;
+					request.session.password = password;
+					return response.end("Ok!");
+				}
+			}
+	
+			response.end("Invalid Login or password.");
+		});
+	
+		// Получить данные.
+		// Если пользователь авторизирован 
+		// (Т.е. есть куки), то выдаем информацию о нем.
+		app.get("/api/get_info", function (request, response) {
+			// Получаем cookie пользователя.
+			let login = request.session.login;
+			let password = request.session.password;
+	
+			// Контролируем существование cookie.
+			if (!login) return response.end("Not exists");
+			if (!password) return response.end("Not exists");
+	
+			// Если пользователь авторизирован (cookie существуют)
+			// То выдаем информацию о нем (из файла).
+			const FILE_NAME = "data.json";
+			const jsonString = fs.readFileSync(FILE_NAME, "utf-8");
+			const obj = JSON.parse(jsonString);
+	
+			for (let i = 0; i < obj.length; i++) {
+				if (obj[i].login === login && obj[i].password == password) {
+					let answer = "Information:\nlogin:" + obj[i].login + "\nAge:" + obj[i].age +
+						"\nHobby: " + obj[i].hobby;
+					return response.end(answer);
+				}
+			}
+	
+			response.end("No information!");
+		});
+	
+		// Выход из системы.
+		app.get("/api/sign_out", function (request, response) {
+			// Удалить все cookie.
+			request.session = null;
+			response.end("You are sign out!");
+		});
+	}
+	
+	main()	
 \end{lstlisting}
 
 \textbf{Вывод:}
@@ -151,5 +246,29 @@
 \begin{figure}[ht!]
 	\centering{
 		\includegraphics[width=0.9\textwidth]{img/2.png}
+		\caption{Пример работы программы}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/3.png}
+		\caption{Пример работы программы}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/4.png}
+		\caption{Пример работы программы}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/5.png}
+		\caption{Пример работы программы}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/6.png}
 		\caption{Пример работы программы}}
 \end{figure}
