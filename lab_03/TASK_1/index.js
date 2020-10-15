@@ -52,9 +52,11 @@ function loadBody(request, callback) {
 app.post("/save/info", function (request, response) {
 	loadBody(request, function (body) {
 
-
 		const obj = JSON.parse(body);
 
+		// TODO: тут сделать проверку на уникальность
+		// И результатом отправлять "Добавилось" или "Не добавилось"
+		// + css пофиксить 
 
 		const a = obj["a"];
 		const b = obj["b"];
