@@ -1,45 +1,104 @@
 "use strict";
 
-// импортируем библиотеку
+// Основное отличие POST запросов от GET запросов:
+// У POST запросов есть тело
+// В методе POST параметры передаются не в URL, а в теле запроса.
+// Оно указывается в вызове send(body).
+
+
+// Запуск:
+// http://localhost:5000/page.html
+
+// импортируем необходимые библиотеки
 const express = require("express");
+const fs = require("fs");
 
 // запускаем сервер
 const app = express();
 const port = 5000;
 app.listen(port);
-console.log(`Server on port ${port} \n\n`);
+console.log(`Server on port ${port}`);
 
-// заголовки в ответ клиенту
-app.use(function (req, res, next) {
-	res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	res.header("Access-Control-Allow-Origin", "*");
-	next();
-});
+// отправка статических файлов
+const way = __dirname + "/static";
+app.use(express.static(way));
 
-// выдать страницу
-app.get("/page", function (request, response) {
-	response.sendFile(__dirname + "/" + "page.html");
-});
-
-// глобальный объект
-const globalObject = {
-	"Максим_%_?_&_11": 100,
-	"Нина_%_?_&_22": 200,
-	"Георгий_%_?_&_33": 300,
-	"Дмитрий_%_?_&_44": 400
-};
-
-// выдать запись
-app.get("/record", function (request, response) {
-	console.log(request.url);
-	const key = request.query.k;
-	const value = globalObject[key] || null;
-	console.log(`Key: ${key}`);
-	console.log(`Value: ${value}`);
-	console.log("\n");
+// Получение суммы чисел.
+// Это GET запрос он получает 
+// В url некоторые аргументы.
+// Не имеет тела.
+app.get("/sum", function (request, response) {
+	const a = request.query.a;
+	const b = request.query.b;
+	const s = parseInt(a) + parseInt(b);
 	response.end(JSON.stringify({
-		k: key,
-		v: value
+		result: s
 	}));
 });
+
+// body
+// Тут получаем данные тела.
+function loadBody(request, callback) {
+	let body = [];
+	request.on('data', (chunk) => {
+		body.push(chunk);
+	}).on('end', () => {
+		body = Buffer.concat(body).toString();
+		callback(body);
+	});
+}
+
+// it is post
+app.post("/save/info", function (request, response) {
+	loadBody(request, function (body) {
+
+
+		const obj = JSON.parse(body);
+
+
+		const a = obj["a"];
+		const b = obj["b"];
+		const c = obj["c"];
+
+		console.log("Я тут " + a + " " + b + " " + c)
+
+		const contentString = `A: ${a} B: ${b} C: ${c}`;
+		fs.writeFileSync("file.txt", contentString);
+		response.end(JSON.stringify({
+			result: "Save content ok"
+		}));
+	});
+});
+
+// "use strict";
+
+// // импортируем библиотеку
+// const express = require("express");
+
+// // запускаем сервер
+// const app = express();
+// const port = 5000;
+// app.listen(port);
+// console.log(`Server on port ${port}`);
+
+// // отправка статических файлов
+// const way = __dirname + "/static";
+// app.use(express.static(way));
+
+// // заголовки в ответ клиенту
+// app.use(function (req, res, next) {
+// 	res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// 	res.header("Access-Control-Allow-Origin", "*");
+// 	next();
+// });
+
+// // получение суммы чисел
+// app.get("/sum", function (request, response) {
+// 	const a = request.query.a;
+// 	const b = request.query.b;
+// 	const s = parseInt(a) + parseInt(b);
+// 	response.end(JSON.stringify({
+// 		result: s
+// 	}));
+// });
