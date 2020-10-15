@@ -34,7 +34,6 @@ window.onload = function () {
 		r.onload = function () {
 			callback(r.response);
 		}
-		// label.innerHTML = `Ответ`
 	}
 
 
@@ -53,7 +52,9 @@ window.onload = function () {
 		}), function (answerString) {
 			const answerObject = JSON.parse(answerString);
 			const result = answerObject.result;
-			alert(result);
+			label.innerHTML = `Ответ: ${result}`;
+
+			// alert(result);
 		});
 
 		// ajaxGet(url, function (stringAnswer) {

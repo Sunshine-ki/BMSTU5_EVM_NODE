@@ -11,3 +11,107 @@ body {
     cursor: pointer;
     display: inline-block;
 }
+
+/* * {
+	box-sizing: border-box;
+	color: #FFC0CB;
+	text-align: center;
+}
+h2 {
+	color: #FFC0CB;
+
+}
+
+p {
+	font-size: 30px;
+
+}
+
+:root {
+	--background: #E0FFFF;
+	--background-accent: #FFC0CB;
+	--background-accent-2: #FFFFFF;
+	--light: #FFFFFF;
+	--dark: #E0FFFF;
+	--text: #C8A2C8
+}
+
+body {
+  	background-color: var(--background);
+	background-image: linear-gradient(
+		var(--background-accent-2) 50%,
+		var(--background-accent) 50%
+	), linear-gradient(
+		var(--background-accent) 50%,
+		var(--background-accent-2) 50%
+	);
+	background-repeat: no-repeat;
+	background-size: 100% 30px;
+	background-position: top left, bottom left;
+	/* min-height: 100vh; */
+}
+
+div {
+	display: block;
+	width: 400px;
+	margin: 0 auto 0 auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 15vh; 
+ }
+
+button {
+	display: block;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	background-color: var(--light);
+	width: 400px;
+	height: 70px;
+	border-radius: 30px;
+	font-size: 1.2rem;
+	font-weight: 600;
+	color: var(--text);
+	background-size: 100% 100%;
+	box-shadow: 0 0 0 7px var(--light) inset;
+	margin-bottom: 15px;
+
+	/* text-shadow: #cad5e2 1px 1px 0, #cad5e2 2px 2px 0, 
+			#cad5e2 3px 3px 0, #cad5e2 4px 4px 0, 
+			#cad5e2 5px 5px 0; */
+}
+
+button:hover {
+	background-image: linear-gradient(
+		145deg,
+		transparent 10%,
+		var(--dark) 10% 20%,
+		transparent 20% 30%,
+		var(--dark) 30% 40%,
+		transparent 40% 50%,
+		var(--dark) 50% 60%,
+		transparent 60% 70%,
+		var(--dark) 70% 80%,
+		transparent 80% 90%,
+		var(--dark) 90% 100%
+	);
+	animation: background 3s linear infinite;
+}
+
+input {
+    /* border: none; */
+    font-size:22px;
+    font-family:Tahoma, Geneva, sans-serif;
+    /* color:#000000;   */
+	margin:0 0 6px 0;
+}
+
+@keyframes background {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+} */
