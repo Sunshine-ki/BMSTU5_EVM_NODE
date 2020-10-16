@@ -28,6 +28,12 @@ app.use(express.static(way));
 // В url некоторые аргументы.
 // Не имеет тела.
 app.get("/sum", function (request, response) {
+
+	// TODO: Тут открыть файл, найти человека
+	// (Или не найти) и вернуть найденное значение 
+	// (или сообщение, что человека нет).
+
+	console.log("Я как бы тут")
 	const a = request.query.a;
 	const b = request.query.b;
 	const s = parseInt(a) + parseInt(b);
