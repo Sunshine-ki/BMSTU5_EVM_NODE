@@ -10,6 +10,7 @@ const express = require("express");
 const fs = require("fs");
 
 const ENCODING = "utf-8"
+const fileName = "data/user.json";
 
 // Запуск:
 // http://localhost:5000/page.html
@@ -34,13 +35,23 @@ function main() {
 		// TODO: Тут открыть файл, найти человека
 		// (Или не найти) и вернуть найденное значение 
 		// (или сообщение, что человека нет).
-
-		console.log("Я как бы тут")
-
 		const mail = request.query.mail;
+		let res = "Нет информации.";
+
+		// Открываем файл и парсим.
+		const objInfo = fs.readFileSync(fileName, "utf-8");
+		const infoJson = JSON.parse(objInfo);
+
+		// Проверяем наличие.
+		for (let i in infoJson) {
+			if (mail == infoJson[i].mail) {
+				res = infoJson[i];
+				break;
+			}
+		}
 
 		response.end(JSON.stringify({
-			result: mail
+			result: JSON.stringify(res)
 		}));
 	});
 
@@ -65,23 +76,51 @@ function main() {
 	// it is post
 	app.post("/save/info", function (request, response) {
 		loadBody(request, function (body) {
+			// Файл, содержащий бд пользователей.
 
+			// Получаем данные.
 			const obj = JSON.parse(body);
-
-			// TODO: тут сделать проверку на уникальность
-			// И результатом отправлять "Добавилось" или "Не добавилось"
-			// + css пофиксить 
-
 			const mail = obj["mail"];
 			const surname = obj["surname"];
 			const phone_number = obj["phone_number"];
 
-			// console.log("Я тут " + a + " " + b + " " + c)
+			// TODO: Ссылка на страницу назад!!!!!!!!!
 
-			const contentString = `A: ${mail} B: ${surname} C: ${phone_number}`;
-			fs.writeFileSync("file.txt", contentString);
+			// Открываем файл и парсим.
+			const objInfo = fs.readFileSync(fileName, "utf-8");
+			const infoJson = JSON.parse(objInfo);
+
+			// true - нужно добавить.
+			// false - уже имеется юзер.
+			let flag = true;
+			// Текст, который увидит пользователь.
+			let text = "";
+
+			// Проверяем уникальность.
+			for (let i in infoJson) {
+				if (mail == infoJson[i].mail) {
+					flag = false;
+					text = "Данная почта уже имеется в системе!"
+					break;
+				}
+				if (phone_number == infoJson[i].phone_number) {
+					flag = false;
+					text = "Данный номер уже имеется в системе!"
+					break;
+				}
+			}
+
+			// Если уникальный, добавляем в нашу БД.
+			// И меняем сообщение на то, что инфа добавлена.
+			if (flag) {
+				infoJson.push({ mail, surname, phone_number })
+				fs.writeFileSync(fileName, JSON.stringify(infoJson, null, 4));
+				text = "Информация успешно добавлена!"
+			}
+
+			// Ответ запроса.
 			response.end(JSON.stringify({
-				result: "Save content ok"
+				result: text
 			}));
 		});
 	});

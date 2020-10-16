@@ -1,0 +1,17 @@
+[
+    {
+        "mail": "alice@mail.ru",
+        "surname": "Sukocheva",
+        "phone_number": "89998981333"
+    },
+    {
+        "mail": "nastya@mail.ru",
+        "surname": "Namestnik",
+        "phone_number": "89995181231"
+    },
+    {
+        "mail": "sukocheva@mail.ru",
+        "surname": "Sukocheva",
+        "phone_number": "8999987654"
+    }
+]
