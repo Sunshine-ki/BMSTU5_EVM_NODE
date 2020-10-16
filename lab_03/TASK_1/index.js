@@ -9,6 +9,8 @@
 const express = require("express");
 const fs = require("fs");
 
+const ENCODING = "utf-8"
+
 // Запуск:
 // http://localhost:5000/page.html
 
@@ -23,7 +25,7 @@ function main() {
 	const way = __dirname + "/static";
 	app.use(express.static(way));
 
-	// Получение суммы чисел.
+	// Получение информации.
 	// Это GET запрос он получает 
 	// В url некоторые аргументы.
 	// Не имеет тела.
@@ -37,10 +39,14 @@ function main() {
 
 		const mail = request.query.mail;
 
-
 		response.end(JSON.stringify({
 			result: mail
 		}));
+	});
+
+	app.get("/get_info", (_request, response) => {
+		const fileContent = fs.readFileSync("static/" + "get_info.html", ENCODING);
+		response.end(fileContent);
 	});
 
 
@@ -83,39 +89,3 @@ function main() {
 
 
 main();
-
-
-
-
-// "use strict";
-
-// // импортируем библиотеку
-// const express = require("express");
-
-// // запускаем сервер
-// const app = express();
-// const port = 5000;
-// app.listen(port);
-// console.log(`Server on port ${port}`);
-
-// // отправка статических файлов
-// const way = __dirname + "/static";
-// app.use(express.static(way));
-
-// // заголовки в ответ клиенту
-// app.use(function (req, res, next) {
-// 	res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-// 	res.header("Access-Control-Allow-Origin", "*");
-// 	next();
-// });
-
-// // получение суммы чисел
-// app.get("/sum", function (request, response) {
-// 	const a = request.query.a;
-// 	const b = request.query.b;
-// 	const s = parseInt(a) + parseInt(b);
-// 	response.end(JSON.stringify({
-// 		result: s
-// 	}));
-// });

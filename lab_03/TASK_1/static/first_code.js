@@ -7,27 +7,12 @@ window.onload = function () {
 	const field_mail = document.getElementById("field-mail");
 	const field_surname = document.getElementById("field-surname");
 	const field_phone_number = document.getElementById("field-phone_number");
-	const field_find_mail = document.getElementById("field-get-info");
 
 	// Получаем кнопку, при нажатии на которую должна добавляться информация.
 	const btn_add_info = document.getElementById("add-info-btn");
-	// Получаем кнопку, при нажатии на которую должна выдаваться информация.
-	const btn_get_info = document.getElementById("get-info-btn");
 
 	// Метка, на которой будет отображен результат добваления (Добавилось/Не добавилось).
 	const label = document.getElementById("result-label");
-
-	// ajax get
-	function ajaxGet(urlString, callback) {
-		let r = new XMLHttpRequest();
-		r.open("GET", urlString, true);
-		r.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-		r.send(null);
-		r.onload = function () {
-			callback(r.response);
-		};
-	};
-
 
 	function ajaxPost(urlString, bodyString, callback) {
 		let r = new XMLHttpRequest();
@@ -55,16 +40,4 @@ window.onload = function () {
 			label.innerHTML = result;
 		});
 	};
-
-	btn_get_info.onclick = function () {
-		const find_mail = field_find_mail.value;
-
-		const url = `/find?mail=${find_mail}`;
-
-		ajaxGet(url, function (stringAnswer) {
-			const objectAnswer = JSON.parse(stringAnswer);
-			const result = objectAnswer.result;
-			alert(result);
-		});
-	}
 };
