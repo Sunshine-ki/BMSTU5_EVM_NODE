@@ -5,78 +5,87 @@
 // В методе POST параметры передаются не в URL, а в теле запроса.
 // Оно указывается в вызове send(body).
 
-
-// Запуск:
-// http://localhost:5000/page.html
-
 // импортируем необходимые библиотеки
 const express = require("express");
 const fs = require("fs");
 
-// запускаем сервер
-const app = express();
-const port = 5000;
-app.listen(port);
-console.log(`Server on port ${port}`);
+// Запуск:
+// http://localhost:5000/page.html
 
-// отправка статических файлов
-const way = __dirname + "/static";
-app.use(express.static(way));
+function main() {
+	// Запускаем сервер.
+	const app = express();
+	const port = 5000;
+	app.listen(port);
+	console.log(`Server on port ${port}`);
 
-// Получение суммы чисел.
-// Это GET запрос он получает 
-// В url некоторые аргументы.
-// Не имеет тела.
-app.get("/sum", function (request, response) {
+	// Отправка статических файлов.
+	const way = __dirname + "/static";
+	app.use(express.static(way));
 
-	// TODO: Тут открыть файл, найти человека
-	// (Или не найти) и вернуть найденное значение 
-	// (или сообщение, что человека нет).
+	// Получение суммы чисел.
+	// Это GET запрос он получает 
+	// В url некоторые аргументы.
+	// Не имеет тела.
+	app.get("/find", function (request, response) {
 
-	console.log("Я как бы тут")
-	const a = request.query.a;
-	const b = request.query.b;
-	const s = parseInt(a) + parseInt(b);
-	response.end(JSON.stringify({
-		result: s
-	}));
-});
+		// TODO: Тут открыть файл, найти человека
+		// (Или не найти) и вернуть найденное значение 
+		// (или сообщение, что человека нет).
 
-// body
-// Тут получаем данные тела.
-function loadBody(request, callback) {
-	let body = [];
-	request.on('data', (chunk) => {
-		body.push(chunk);
-	}).on('end', () => {
-		body = Buffer.concat(body).toString();
-		callback(body);
+		console.log("Я как бы тут")
+
+		const mail = request.query.mail;
+
+
+		response.end(JSON.stringify({
+			result: mail
+		}));
+	});
+
+
+	// body
+	// Тут получаем данные тела.
+	function loadBody(request, callback) {
+		let body = [];
+		request.on('data', (chunk) => {
+			body.push(chunk);
+		}).on('end', () => {
+			body = Buffer.concat(body).toString();
+			callback(body);
+		});
+	}
+
+	// it is post
+	app.post("/save/info", function (request, response) {
+		loadBody(request, function (body) {
+
+			const obj = JSON.parse(body);
+
+			// TODO: тут сделать проверку на уникальность
+			// И результатом отправлять "Добавилось" или "Не добавилось"
+			// + css пофиксить 
+
+			const mail = obj["mail"];
+			const surname = obj["surname"];
+			const phone_number = obj["phone_number"];
+
+			// console.log("Я тут " + a + " " + b + " " + c)
+
+			const contentString = `A: ${mail} B: ${surname} C: ${phone_number}`;
+			fs.writeFileSync("file.txt", contentString);
+			response.end(JSON.stringify({
+				result: "Save content ok"
+			}));
+		});
 	});
 }
 
-// it is post
-app.post("/save/info", function (request, response) {
-	loadBody(request, function (body) {
 
-		const obj = JSON.parse(body);
+main();
 
-		// TODO: тут сделать проверку на уникальность
-		// И результатом отправлять "Добавилось" или "Не добавилось"
-		// + css пофиксить 
 
-		const a = obj["a"];
-		const b = obj["b"];
-		const c = obj["c"];
 
-		console.log("Я тут " + a + " " + b + " " + c)
-
-		const contentString = `A: ${a} B: ${b} C: ${c}`;
-		fs.writeFileSync("file.txt", contentString);
-		response.end(JSON.stringify({
-			result: "Save content ok"
-		}));
-	});
-});
 
 // "use strict";
 

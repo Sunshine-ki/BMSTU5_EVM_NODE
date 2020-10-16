@@ -1,23 +1,20 @@
 "use strict";
 
-// onload - ф-ция которая выз. когда собрался HTML.
-// window - это глобальной объект
+// onload - функция, которая вызывается когда собрался HTML.
+// window - это глобальной объект.
 window.onload = function () {
-	// input fields
-	const f1 = document.getElementById("field-first");
-	const f2 = document.getElementById("field-second");
-	const f3 = document.getElementById("field-phone_number");
+	// Получаем (ссылку) на поля.
+	const field_mail = document.getElementById("field-mail");
+	const field_surname = document.getElementById("field-surname");
+	const field_phone_number = document.getElementById("field-phone_number");
+	const field_find_mail = document.getElementById("field-get-info");
 
-	const f4 = document.getElementById("field-get-info");
+	// Получаем кнопку, при нажатии на которую должна добавляться информация.
+	const btn_add_info = document.getElementById("add-info-btn");
+	// Получаем кнопку, при нажатии на которую должна выдаваться информация.
+	const btn_get_info = document.getElementById("get-info-btn");
 
-
-	// button
-	const btn = document.getElementById("sum-find-btn");
-
-	const btnInfo = document.getElementById("get-info-find-btn");
-
-
-	// label
+	// Метка, на которой будет отображен результат добваления (Добавилось/Не добавилось).
 	const label = document.getElementById("result-label");
 
 	// ajax get
@@ -42,38 +39,32 @@ window.onload = function () {
 		}
 	}
 
+	// Событие: нажали на кнопку.
+	btn_add_info.onclick = function () {
+		const mail = field_mail.value;
+		const surname = field_surname.value;
+		const phone_number = field_phone_number.value;
 
-	// click event
-	btn.onclick = function () {
-
-
-		const a = f1.value;
-		const b = f2.value;
-		const c = f3.value;
-
-		// const url = `/sum?a=${a}&b=${b}`;
-
+		// Создаем POST запрос. 
+		// В тело предаем mail, surname, phone_number.
 		ajaxPost("/save/info", JSON.stringify({
-			a, b, c
+			mail, surname, phone_number
 		}), function (answerString) {
 			const answerObject = JSON.parse(answerString);
 			const result = answerObject.result;
-			label.innerHTML = `Ответ: ${result}`;
-
-			// alert(result);
+			label.innerHTML = result;
 		});
 	};
 
-	btnInfo.onclick = function () {
-		const a = f4.value;
-		const b = f4.value;
-		const url = `/sum?a=${a}&b=${b}`;
+	btn_get_info.onclick = function () {
+		const find_mail = field_find_mail.value;
+
+		const url = `/find?mail=${find_mail}`;
 
 		ajaxGet(url, function (stringAnswer) {
 			const objectAnswer = JSON.parse(stringAnswer);
 			const result = objectAnswer.result;
 			alert(result);
-			// label.innerHTML = `Ответ: ${result}`;
 		});
 	}
 };

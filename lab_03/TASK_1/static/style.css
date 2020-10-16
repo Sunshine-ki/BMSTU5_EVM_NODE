@@ -1,18 +1,4 @@
-body {
-    padding: 30px;
-    background: burlywood;
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-}
-
-.btn-class {
-    padding: 6px;
-    background: blueviolet;
-    color: white;
-    cursor: pointer;
-    display: inline-block;
-}
-
-/* * {
+* {
 	box-sizing: border-box;
 	color: #FFC0CB;
 	text-align: center;
@@ -25,6 +11,18 @@ h2 {
 p {
 	font-size: 30px;
 
+}
+
+body {
+    padding: 30px;
+    background: burlywood;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+
+.btn-class {
+    padding: 22px;
+    cursor: pointer;
+    display: inline-block;
 }
 
 :root {
@@ -48,20 +46,10 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100% 30px;
 	background-position: top left, bottom left;
-	/* min-height: 100vh; */
+	min-height: 100vh;
 }
 
 div {
-	display: block;
-	width: 400px;
-	margin: 0 auto 0 auto;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 15vh; 
- }
-
-button {
 	display: block;
 	cursor: pointer;
 	outline: none;
@@ -76,13 +64,14 @@ button {
 	background-size: 100% 100%;
 	box-shadow: 0 0 0 7px var(--light) inset;
 	margin-bottom: 15px;
+	margin: 0 auto 0 auto ;
 
 	/* text-shadow: #cad5e2 1px 1px 0, #cad5e2 2px 2px 0, 
 			#cad5e2 3px 3px 0, #cad5e2 4px 4px 0, 
 			#cad5e2 5px 5px 0; */
 }
 
-button:hover {
+div:hover {
 	background-image: linear-gradient(
 		145deg,
 		transparent 10%,
@@ -114,4 +103,4 @@ input {
   100% {
     background-position: 400px 0;
   }
-} */
+} 
