@@ -21,14 +21,207 @@
 
 Оформить внешний вид созданных страниц с помощью CSS. Информация со стилями CSS для каждой страницы должна храниться в отдельном файле. Стили CSS должны быть подключены к страницам.
 
-\begin{lstlisting}[caption=Код программы. TASK\_1. Главнвая функция main]
-	
+\begin{lstlisting}[caption=Код программы. TASK\_1. Код программы]
+"use strict";
+
+// импортируем необходимые библиотеки
+const express = require("express");
+const fs = require("fs");
+
+const ENCODING = "utf-8"
+const fileName = "data/user.json";
+
+function main() {
+	// Запускаем сервер.
+	const app = express();
+	const port = 5000;
+	app.listen(port);
+	console.log(`Server on port ${port}`);
+
+	// Отправка статических файлов.
+	const way = __dirname + "/static";
+	app.use(express.static(way));
+
+	// Получение информации.
+	// Это GET запрос он получает 
+	// В url некоторые аргументы.
+	// Не имеет тела.
+	app.get("/find", function (request, response) {
+		const mail = request.query.mail;
+		let res = "Нет информации.";
+
+		// Открываем файл и парсим.
+		const objInfo = fs.readFileSync(fileName, "utf-8");
+		const infoJson = JSON.parse(objInfo);
+
+		// Проверяем наличие.
+		for (let i in infoJson) {
+			if (mail == infoJson[i].mail) {
+				res = infoJson[i];
+				break;
+			}
+		}
+
+		response.end(JSON.stringify({
+			result: JSON.stringify(res)
+		}));
+	});
+
+	app.get("/get_info", (_request, response) => {
+		const fileContent = fs.readFileSync("static/" + "get_info.html", ENCODING);
+		response.end(fileContent);
+	});
+
+
+	// body
+	// Тут получаем данные тела.
+	function loadBody(request, callback) {
+		let body = [];
+		request.on('data', (chunk) => {
+			body.push(chunk);
+		}).on('end', () => {
+			body = Buffer.concat(body).toString();
+			callback(body);
+		});
+	}
+
+	// it is post
+	app.post("/save/info", function (request, response) {
+		loadBody(request, function (body) {
+			// Файл, содержащий бд пользователей.
+
+			// Получаем данные.
+			const obj = JSON.parse(body);
+			const mail = obj["mail"];
+			const surname = obj["surname"];
+			const phone_number = obj["phone_number"];
+
+			// Открываем файл и парсим.
+			const objInfo = fs.readFileSync(fileName, "utf-8");
+			const infoJson = JSON.parse(objInfo);
+
+			// true - нужно добавить.
+			// false - уже имеется юзер.
+			let flag = true;
+			// Текст, который увидит пользователь.
+			let text = "";
+
+			// Проверяем уникальность.
+			for (let i in infoJson) {
+				if (mail == infoJson[i].mail) {
+					flag = false;
+					text = "Данная почта уже имеется в системе!"
+					break;
+				}
+				if (phone_number == infoJson[i].phone_number) {
+					flag = false;
+					text = "Данный номер уже имеется в системе!"
+					break;
+				}
+			}
+
+			// Если уникальный, добавляем в нашу БД.
+			// И меняем сообщение на то, что инфа добавлена.
+			if (flag) {
+				infoJson.push({ mail, surname, phone_number })
+				fs.writeFileSync(fileName, JSON.stringify(infoJson, null, 4));
+				text = "Информация успешно добавлена!"
+			}
+
+			// Ответ запроса.
+			response.end(JSON.stringify({
+				result: text
+			}));
+		});
+	});
+}
+
+
+main();
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Код программы. TASK\_1. Реализация заданий]
-	
+\begin{lstlisting}[caption=Код программы. TASK\_1. Дополнительный скрипт]
+	"use strict";
+
+// onload - функция, которая вызывается когда собрался HTML.
+// window - это глобальной объект.
+window.onload = function () {
+	// Получаем (ссылку) на поля.
+	const field_find_mail = document.getElementById("field-get-info");
+
+	// Получаем кнопку, при нажатии на которую должна выдаваться информация.
+	const btn_get_info = document.getElementById("get-info-btn");
+
+	// ajax get
+	function ajaxGet(urlString, callback) {
+		let r = new XMLHttpRequest();
+		r.open("GET", urlString, true);
+		r.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+		r.send(null);
+		r.onload = function () {
+			callback(r.response);
+		};
+	};
+
+	btn_get_info.onclick = function () {
+		const find_mail = field_find_mail.value;
+
+		const url = `/find?mail=${find_mail}`;
+
+		ajaxGet(url, function (stringAnswer) {
+			const objectAnswer = JSON.parse(stringAnswer);
+			const result = objectAnswer.result;
+			alert(result);
+		});
+	}
+};
 \end{lstlisting}
 
+\begin{lstlisting}[caption=Код программы. TASK\_1. Дополнительный скрипт]
+	"use strict";
+
+	// onload - функция, которая вызывается когда собрался HTML.
+	// window - это глобальной объект.
+	window.onload = function () {
+		// Получаем (ссылку) на поля.
+		const field_mail = document.getElementById("field-mail");
+		const field_surname = document.getElementById("field-surname");
+		const field_phone_number = document.getElementById("field-phone_number");
+	
+		// Получаем кнопку, при нажатии на которую должна добавляться информация.
+		const btn_add_info = document.getElementById("add-info-btn");
+	
+		// Метка, на которой будет отображен результат добваления (Добавилось/Не добавилось).
+		const label = document.getElementById("result-label");
+	
+		function ajaxPost(urlString, bodyString, callback) {
+			let r = new XMLHttpRequest();
+			r.open("POST", urlString, true);
+			r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			r.send(bodyString);
+			r.onload = function () {
+				callback(r.response);
+			}
+		}
+	
+		// Событие: нажали на кнопку.
+		btn_add_info.onclick = function () {
+			const mail = field_mail.value;
+			const surname = field_surname.value;
+			const phone_number = field_phone_number.value;
+	
+			// Создаем POST запрос. 
+			// В тело предаем mail, surname, phone_number.
+			ajaxPost("/save/info", JSON.stringify({
+				mail, surname, phone_number
+			}), function (answerString) {
+				const answerObject = JSON.parse(answerString);
+				const result = answerObject.result;
+				label.innerHTML = result;
+			});
+		};
+	};
+\end{lstlisting}
 
 \textbf{Вывод:}
 
@@ -41,12 +234,24 @@
 
 \textbf{Пример работы:}
 
-% \begin{figure}[ht!]
-% 	\centering{
-% 		\includegraphics[width=0.9\textwidth]{img/1.png}
-% 		\caption{Пример работы программы}}
-% \end{figure}
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/7.png}
+		\caption{Пример работы программы}}
+\end{figure}
 
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/8.png}
+		\caption{Пример работы программы}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/9.png}
+		\caption{Пример работы программы}}
+\end{figure}
 
 \chapter{TASK\_2.}
 
