@@ -10,5 +10,9 @@
     {
         "type": "BMW X5",
         "price": "5 510 000"
+    },
+    {
+        "type": "myCar",
+        "price": "1000000"
     }
 ]

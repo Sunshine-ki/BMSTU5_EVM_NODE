@@ -7,7 +7,7 @@ const fs = require("fs");
 
 // запускаем сервер
 const app = express();
-const port = 5002;
+const port = 5003;
 app.listen(port);
 console.log("Server on port " + port);
 
@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
-// загрузка тела
+// Загрузка тела.
 function loadBody(request, callback) {
 	let body = [];
 	request.on('data', (chunk) => {
@@ -30,7 +30,7 @@ function loadBody(request, callback) {
 	});
 }
 
-// приём запроса
+// Приём запроса.
 app.post("/insert/record", function (request, response) {
 	loadBody(request, function (body) {
 		// Получаем данные.
@@ -66,7 +66,7 @@ app.post("/insert/record", function (request, response) {
 	});
 });
 
-// приём запроса
+// Приём запроса.
 app.post("/select/record", function (request, response) {
 	loadBody(request, function (body) {
 		// Получаем данные.
