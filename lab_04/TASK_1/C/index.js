@@ -60,5 +60,25 @@ app.get("/set_info_car/", (request, response) => {
 		const answerObject = JSON.parse(answerString);
 		const answer = answerObject.answer;
 		response.end("Answer: " + answer);
+
+		// Либо ту же страницу возвращать.
+		// 	const fileContent = fs.readFileSync("static/" + "index.html", ENCODING);
+		// response.end(fileContent);
+	});
+});
+
+app.get("/get_info_car/", (request, response) => {
+	const type = request.query.field_type_car_find;
+
+	sendPost("http://localhost:5002/select/record", JSON.stringify(
+		{ type }
+	), function (answerString) {
+		const answerObject = JSON.parse(answerString);
+		const answer = answerObject.answer;
+		response.end("Answer: " + answer);
+
+		// Либо ту же страницу возвращать.
+		// 	const fileContent = fs.readFileSync("static/" + "index.html", ENCODING);
+		// response.end(fileContent);
 	});
 });

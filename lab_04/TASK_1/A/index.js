@@ -33,20 +33,63 @@ function loadBody(request, callback) {
 // приём запроса
 app.post("/insert/record", function (request, response) {
 	loadBody(request, function (body) {
+		// Получаем данные.
 		const obj = JSON.parse(body);
 		const type = obj.type;
 		const price = obj.price;
 
-		const fileName = "data.json";
 		// Открываем файл и парсим.
+		const fileName = "data_car.json";
 		const objInfo = fs.readFileSync(fileName, "utf-8");
 		const infoJson = JSON.parse(objInfo);
-		infoJson.push({ type, price })
-		fs.writeFileSync(fileName, JSON.stringify(infoJson, null, 4));
+		let answer = "Model is exist!";
 
-		const s = 4;
-		response.end(JSON.stringify({
-			answer: s
-		}));
+		let flag = true;
+		// Ищем модель.
+		for (let i in infoJson) {
+			if (infoJson[i].type === type) {
+				// console.log(infoJson[i]);
+				flag = false;
+				break;
+			}
+		}
+
+		// Добавляем в файл информацию,
+		// Если такой модели еще нет.
+		if (flag) {
+			infoJson.push({ type, price })
+			fs.writeFileSync(fileName, JSON.stringify(infoJson, null, 4));
+			answer = "Model add";
+		}
+
+		response.end(JSON.stringify({ answer: answer }));
+	});
+});
+
+// приём запроса
+app.post("/select/record", function (request, response) {
+	loadBody(request, function (body) {
+		// Получаем данные.
+		const obj = JSON.parse(body);
+		const type = obj.type;
+
+		// Открываем файл и парсим.
+		const fileName = "data_car.json";
+		const objInfo = fs.readFileSync(fileName, "utf-8");
+		const infoJson = JSON.parse(objInfo);
+
+		// Ответ пользователю.
+		let answer = "Model does not!";
+
+		// Ищем модель.
+		for (let i in infoJson) {
+			if (infoJson[i].type === type) {
+				// console.log(infoJson[i]);
+				answer = infoJson[i];
+				break;
+			}
+		}
+
+		response.end(JSON.stringify({ answer: JSON.stringify(answer) }));
 	});
 });

@@ -1,0 +1,14 @@
+[
+    {
+        "type": "monster",
+        "price": "3 450 567"
+    },
+    {
+        "type": "mustang",
+        "price": "4 123 321"
+    },
+    {
+        "type": "BMW X5",
+        "price": "5 510 000"
+    }
+]
