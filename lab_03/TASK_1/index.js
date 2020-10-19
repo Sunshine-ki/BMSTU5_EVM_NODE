@@ -32,7 +32,7 @@ function main() {
 	// Не имеет тела.
 	app.get("/find", function (request, response) {
 
-		// TODO: Тут открыть файл, найти человека
+		//  Открыть файл, найти человека
 		// (Или не найти) и вернуть найденное значение 
 		// (или сообщение, что человека нет).
 		const mail = request.query.mail;
@@ -83,8 +83,6 @@ function main() {
 			const mail = obj["mail"];
 			const surname = obj["surname"];
 			const phone_number = obj["phone_number"];
-
-			// TODO: Ссылка на страницу назад!!!!!!!!!
 
 			// Открываем файл и парсим.
 			const objInfo = fs.readFileSync(fileName, "utf-8");

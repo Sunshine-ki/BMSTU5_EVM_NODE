@@ -16,6 +16,7 @@ window.onload = function () {
 
 	function ajaxPost(urlString, bodyString, callback) {
 		let r = new XMLHttpRequest();
+		// Инициализация соединения.
 		r.open("POST", urlString, true);
 		r.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		r.send(bodyString);

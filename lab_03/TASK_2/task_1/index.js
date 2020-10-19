@@ -65,6 +65,7 @@ function main() {
 			gamesArray: resultArray
 		};
 
+		// Метод, которые принимает шаблон и данные, которые туда нужно подставить.
 		response.render("pageGames.hbs", infoObject);
 	});
 }

@@ -13,5 +13,15 @@
         "mail": "sukocheva@mail.ru",
         "surname": "Sukocheva",
         "phone_number": "8999987654"
+    },
+    {
+        "mail": "test@mail.ru",
+        "surname": "test",
+        "phone_number": "89998889889"
+    },
+    {
+        "mail": "dsjkfhas",
+        "surname": "jhdskfh",
+        "phone_number": "jksdfa"
     }
 ]
