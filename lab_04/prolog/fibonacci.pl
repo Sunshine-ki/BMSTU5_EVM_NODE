@@ -1,5 +1,5 @@
 % swipl fibonacci.pl 
-% input(5,100).
+% f.
 
 % С клавиатуры считываются числа A и B. 
 % Необходимо вывести на экран все числа Фибоначчи, которые принадлежат отрезку от A до B.
@@ -12,4 +12,5 @@ fib(PREV, CURR, A, B) :-
 	CURR =< B,
 	fib(CURR, PREV + CURR, A, B).   
 
-input(A, B):- fib(1,1,A,B).
+ok.
+f :- read(A), read(B), fib(1, 1, A, B); ok.
