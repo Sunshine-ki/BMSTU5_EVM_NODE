@@ -12,5 +12,4 @@ fib(PREV, CURR, A, B) :-
 	CURR =< B,
 	fib(CURR, PREV + CURR, A, B).   
 
-ok.
-f :- read(A), read(B), fib(1, 1, A, B); ok.
+f :- read(A), read(B), fib(1, 1, A, B).
