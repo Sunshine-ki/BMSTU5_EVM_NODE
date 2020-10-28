@@ -6,7 +6,9 @@
 	\item Изучать и реализовать взаимодействие между серверами.
 	\item Изучать и реализовать дочерние процессы.
 	\item Изучать и реализовать process.argv.
+	\item Изучить prolog.
 \end{itemize}
+
 
 \textbf{Задание 1}
 
@@ -395,12 +397,29 @@ function factorial() {
 factorial();
 \end{lstlisting}
 
+\textbf{TASK\_8}
+
+С клавиатуры считываются числа A и B. Необходимо вывести на экран все числа Фибоначчи, которые принадлежат отрезку от A до B.
+
+\begin{lstlisting}[caption=Числа Фибоначчи]
+writeNumber(X, A) :- X_NEW is X, ((X >= A) -> write(X_NEW), write(" ");  write("")).
+
+fib(PREV, CURR, A, B) :- 
+	writeNumber(PREV, A),
+	CURR =< B,
+	fib(CURR, PREV + CURR, A, B).   
+
+f :- read(A), read(B), fib(1, 1, A, B).
+\end{lstlisting}
+
+
 \textbf{Вывод:}
 
 \begin{itemize} 
 	\item Мы изучили и реализовали взаимодействие между серверами.
 	\item Изучили и реализовали дочерние процессы.
 	\item Изучили и реализовали process.argv.
+	\item Изучили prolog.
 \end{itemize}
 
 
@@ -451,6 +470,13 @@ factorial();
 \begin{figure}[ht!]
 	\centering{
 		\includegraphics[width=0.9\textwidth]{img/7.png}
+		\caption{Пример работы программы}}
+\end{figure}
+
+
+\begin{figure}[ht!]
+	\centering{
+		\includegraphics[width=0.9\textwidth]{img/8.png}
 		\caption{Пример работы программы}}
 \end{figure}
 
