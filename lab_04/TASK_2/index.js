@@ -30,6 +30,7 @@ function arrayFactorial(array) {
 	let cmd;
 
 	for (let i in array) {
+		// console.log(array[i]);
 		cmd = `node factorial ${array[i]}`
 		console.log(execSync(cmd, OPTIONS))
 	}
